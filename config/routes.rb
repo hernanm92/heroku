@@ -1,12 +1,22 @@
 Rails.application.routes.draw do
-  resources :widgets
+  resources :photos, except: [:new, :edit]
+  resources :posts
+
+  resources :riders
+
+  resources :users, only: [:index, :show, :create, :update, :destroy]
+  resources :videos, only: [:index, :show, :create, :update, :destroy] do
+    resources :comments, only: [:index, :show, :update, :destroy]
+  end
+  resources :sports, only: [:index, :show, :create]
+
+  resources :comments, only: [:create]
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-
-  root 'welcome#index'
+  # root 'welcome#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
@@ -56,4 +66,11 @@ Rails.application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
+
+  get '/', to: 'application#index'
+  get '*path', to: 'application#routing_error'
+  delete '*path', to: 'application#routing_error'
+  post '*path', to: 'application#routing_error'
+  put '*path', to: 'application#routing_error'
+  patch '*path', to: 'application#routing_error'
 end
